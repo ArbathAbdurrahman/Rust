@@ -234,3 +234,116 @@ fn constant(){
     println!("min: {}", MINIMUM);
     println!("max: {}", MAXIMUM);
 }
+
+#[test]
+fn variable_scope(){
+    let nama = "Arbath";
+    println!("nama: {}", nama);
+
+    {
+        println!("inner nama: {}", nama);
+        let age = 20;
+        println!("inner age: {}", age);
+    }
+    // println!("outer age: {}", age); ini diluar scope
+}
+
+/*
+MANAJEMEN MEMORI
+- ketika data sudah fix maka rust akan menyimpan stack (LIFO)
+- ketika data tidak fix maka rust akan menyimpan di dalam Heap
++ heap = kita akan request ke alocator untuk meminta memori dan akan diberikan pointer
++ rust akan menghapus data di stack paling atas dahulu last in first out
+    jadi kalau ada variable keluar dari scope maka dia drop untuk akan membebaskan heap tanpa garbage colletor dan manual manajemen memori
+*/
+
+#[test]
+fn stack_heap(){
+    func_a(); // ini akan masuk ke paling bawah
+    func_b(); // ini akan masuk ke atas func_a
+}
+
+#[test]
+fn func_a(){
+    let a = 10; // ini akan disimpan kedalam stack
+    let b = String::from("Arbath"); // string sisimpan didalam heap dan diakses menggunakan pointer
+    println!("a: {}, b: {}", a, b);
+}
+
+#[test]
+fn func_b(){
+    let a = 100;
+    let b = String::from("Abdurrahman");
+    println!("a: {}, b: {}", a, b);
+}
+
+#[test]
+fn string(){
+    // string slice akan disimpan di stack
+    // ini fix dan tidak akan berubah tetapi akan bisa diganti sehingga data masih ada di memori
+    let name: &str = " Arbath Abdurrahman ";
+    let trim: &str = name.trim();
+    println!("name: {}", name);
+    println!("trim: {}", trim);
+
+    let mut username: &str = "Arbath";
+    println!("username: {}", username);
+    username = "Arbath Abdurrahman";
+    println!("username: {}", username);
+}
+
+#[test]
+fn string_type(){
+    // string type akan disimpan di heap
+    // kita bisa memanipulalsi string dengan method yang telah disediakan
+    // selengkapnya baca di https://doc.rust-lang.org/std/primitive.str.html
+    let mut name: String = String::from("Arbath ");
+    name.push_str("Abdurrahman ");
+    println!("name: {}", name);
+
+    let budi = name.replace("Arbath ", "Budi ");
+    println!("budi: {}", budi);
+}
+
+/* OWNERSHIPS
+- setiap value haru punya owner
+- hanya boleh ada satu owner dalam satu waktu
+- ketika owner keluar scope maka value akan dihapus
+ */
+#[test]
+fn ownership(){
+    // a tidak bisa diakses disini
+    let a = 10;
+    {
+        let b = 20;
+        println!("{}", b);
+    } // scope b selesai, b dihapus, b tidak bisa diakses lagi dan terhapus
+    println!("{}", a);
+}// scope a selesai, a dihapus, a tidak bisa diakses lagi dan otomatis dihapus dari memori
+
+#[test]
+fn data_copy(){
+    // dia akan mencopy data dan hanya di stack tidak dapat terjadi di data heap
+    let a = 10;
+    let b = a;
+    println!("{} {}", a, b);
+}
+
+#[test]
+fn ownership_movement(){
+    // permindahan kepemilikan dari owner lama ke owner baru dan owner lama akan tidak valid hanya dapat terjadi di heap
+    let name = String::from("Arbath");
+    // transfer name ke username
+    let username = name;
+    // println!("name: {}", name); <= ini sudah tidak valid
+    println!("name: {}", username);
+}
+
+#[test]
+fn clone(){
+    // copy tapi untuk heap
+    let name = String::from("Arbath");
+    let username = name.clone();
+
+    println!("{}\n{}", name, username);
+}
