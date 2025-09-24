@@ -347,3 +347,130 @@ fn clone(){
 
     println!("{}\n{}", name, username);
 }
+
+#[test]
+fn if_expression(){
+    // percabangan di rust sama dengan bahasa pemograman lain.
+    // tetapi bisa digabung dengan variabel let tanpa pakai return ;D
+    let value = 10;
+    let result: &str = if value > 10 {
+        "value > 10"
+    } else if value == 10 {
+        "value = 10"
+    } else {
+        "value < 10"
+    };
+    println!("{}", result);
+}
+
+#[test]
+fn looping(){
+    // looping sama juga dengan pemograman lain
+    let mut counter = 0;
+    loop {
+        counter += 1;
+        if counter == 10 {
+            break;
+        } else if counter % 2 == 0 {
+            continue;
+        }
+        println!("counter: {}", counter);
+    }
+
+    // menggunakan let
+    let mut batas = 0;
+    let result = loop {
+        batas = batas + 1;
+        if batas > 10 {
+            break batas * 2;
+        }
+    };
+    println!("result: {}", result);
+
+    let mut i = 0;
+    loop {
+        if i >= 5 { break; }
+        println!("i = {}", i);
+        i += 1;
+    }
+}
+
+#[test]
+fn loop_label(){
+    // nested loop menggunakan label ditandai dengan '
+    let mut number = 1;
+    'terluar: loop {
+        let mut i = 1;
+        loop {
+            if number > 10 {
+                break 'terluar; // akan menghentikan loop lapisan terluar
+            }
+            println!("{} x {} = {}",number, i, number * i);
+
+            i += 1;
+            if i > 10 {
+                break; // akan menghentikan loop lapisan terdalam
+            }
+        }
+        number += 1;
+    }
+}
+
+#[test]
+fn while_loop(){
+    // while untuk print bilangan genap sama seperti loop
+    let mut counter = 0;
+    while counter <= 10 {
+        if counter % 2 == 0 {
+            println!("counter: {}", counter);
+        }
+        counter += 1;
+    }
+}
+
+#[test]
+fn for_loop(){
+    // versi array
+    let arr: [i32;10] = [1,20,30,40,50,60,70,80,90,100];
+    let mut index = 0;
+
+
+    // otomatis
+    for i in arr {
+        println!("{}", i);
+    }
+
+    // kalau manual
+    while index < arr.len(){
+        println!("{}", arr[index]);
+        index += 1;
+    }
+}
+
+#[test]
+fn range(){
+    let arr: [&str;5] = ["A", "B", "C", "D", "E"];
+    let range = 0..5;
+    println!("Start: {}", range.start);
+    println!("End: {}", range.end);
+
+    for i in range {
+        println!("{}", arr[i]);
+    }
+
+    // versi in range
+    for k in 0..10 {
+        println!("k: {}", k);
+    }
+}
+
+#[test]
+fn range_inclusive() {
+    // kalau ingin bagian akhir diambil
+    let arr: [&str; 5] = ["A", "B", "C", "D", "E"];
+    let range = 0..=4;
+
+    for i in range {
+        println!("{}", arr[i]);
+    }
+}
