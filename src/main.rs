@@ -156,3 +156,81 @@ fn boolean_operators(){
     println!("a || b: {}", a || b);
     println!("!a: {}", !a);
 }
+
+#[test]
+fn char(){
+    // kalau char pakai petik satu ('') hanya untuk satu karakter
+    let a: char = 'a';
+
+    println!("a: {}", a);
+}
+
+// TIPE DATA COMPOUND
+#[test]
+fn tuple(){
+    // tuple merupakah kumpulan lebih dari satu tipe data dengan jumlah fix
+    // tentukan dahulu tipe data yang dapat ditampung
+    let mut data: (i32, f64, bool) = (10, 3.14, true);
+    let pi = data.1;
+    data.2 = false; // mengubah data dalam tuple
+
+    // print pakai :?
+    println!("data: {:?}", data);
+    println!("ini sepuluh => {:?}", data.0);
+    println!("ini pi => {}", pi);
+
+    // descructuring tuple
+    let (x, y, z) = data;
+    println!("x: {}, y: {}, z: {}", x, y, z);
+    // tambahkan _ jika tidak mau akses
+    let (a,_,c) = data;
+    println!("a: {}, c: {}", a,c);
+
+    // memanggil tuple kosong
+    unit();
+    let kosong: () = unit();
+    println!("kosong => {:?}", kosong);
+
+    let test_unit: () = ();
+    println!("test_unit => {:?}", test_unit);
+}
+
+#[test]
+fn unit(){
+    println!("ini tuple kosong.");
+}
+
+#[test]
+fn array(){
+    // array hanya meyimpan satu tipe data yang sama dan berukuran fix
+    let mut array: [i32;5]  = [1,2,3,4,5];
+    array[1] = 6;
+    println!("array: {:?}", array);
+    println!("index ke-{:?}", array[0]);
+    println!("index ke-{:?}", array[2]);
+    println!("index ke-2 = {:?}", array[1]);
+    println!("panjang array = {:?}", array.len());
+}
+
+#[test]
+fn array_2d(){
+    // array 2 dimensi alias array didalam array
+    let matrix: [[i32;3];2] = [
+        [1,3,3],
+        [3,4,6]
+    ];
+
+    println!("matrix: {:?}", matrix);
+    println!("array pertama: {:?}", matrix[0]);
+    println!("array pertama index pertama: {:?}", matrix[0][0]);
+    println!("array kedua index kedua: {:?}", matrix[1][1]);
+}
+
+const MINIMUM: i32 = 0;
+#[test]
+fn constant(){
+    // constant harus explisit dan pakai huruf besar snake upercase dan bisa dibuat diluar scope fn
+    const MAXIMUM: i32 = 100;
+    println!("min: {}", MINIMUM);
+    println!("max: {}", MAXIMUM);
+}
