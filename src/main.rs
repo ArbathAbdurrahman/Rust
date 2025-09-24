@@ -474,3 +474,98 @@ fn range_inclusive() {
         println!("{}", arr[i]);
     }
 }
+
+fn say_hello(first_name: &str, last_name: &str){
+    println!("Hello {} {}.", first_name, last_name);
+}
+
+fn factorial_loop(n: i32) -> i32{
+    // fungsi dengan return
+    if n < 1 {
+        return 0;
+    }
+    let mut result = 1;
+    for i in 1..=n {
+        result *= i;
+    }
+
+    result
+}
+
+#[test]
+fn main_func(){
+    say_hello("Arbath", "Abdurrahman");
+    say_hello("Joko", "Sulistio");
+    let result:i32 = factorial_loop(9);
+    println!("result: {}", result);
+}
+
+fn recursive(value: String, times:u32){
+    if times == 0 {
+        return;
+    } else {
+        println!("{}", value);
+    }
+    recursive(value, times-1);
+}
+
+#[test]
+fn recursive_func(){
+    recursive(String::from("Arbath Abdurrahman"), 3);
+}
+
+/* OWNERSHIP IN FUNCTION
+- parameter berbasis stack ownernya akan di copy
+- parameter berbasis heep ownernya akan dipindah ke function
+    jadi saat function berhasil dijalankan maka variabel yang dimasukkan ke parameter akan tidak bisa diakses.
+*/
+fn print_number(number:i32){
+    println!("{}", number);
+}
+fn hi(name:String){
+    println!("{}", name);
+}
+#[test]
+fn func_owner(){
+    let number = 10;
+    print_number(number);
+    println!("{}", number);
+
+    let name = String::from("Arbath Abdurrahman");
+    hi(name);
+    // println!("name: {}", name); // ini akan error karena name jadi milik hi()
+}
+
+fn full_name(first_name: String, last_name: String) -> String {
+    format!("{} {}", first_name, last_name) // returnkan kembali ownership
+}
+
+#[test]
+fn func_full_name(){
+    let first_name = String::from("Arbath");
+    let last_name = String::from("Abdurrahman");
+
+    let name = full_name(first_name, last_name); // kirim ownership ke full_name()
+    println!("Namaku {}", name); // karena ownership telah di return full_name() maka sekarang full name jadi milik name
+
+    // ini tidak bisa karena sudah ditransfer ke full_name()
+    // println!("{}", first_name);
+    // println!("{}", last_name);
+}
+
+fn not_claim(first_name: String, last_name: String) -> (String, String, String) {
+    let full_name: String = format!("{} {}", first_name, last_name);
+
+        (first_name, last_name, full_name) // kembalikan ownership dalam format tuple
+}
+
+#[test]
+fn func_full_name_return(){
+    let first_name = String::from("Arbath");
+    let last_name = String::from("Abdurrahman");
+
+    let (first_name, last_name, name) = not_claim(first_name, last_name); // kirim ownership ke not_claim()
+    println!("Namaku {}", name);
+    println!("{}", first_name);
+    println!("{}", last_name);
+}
