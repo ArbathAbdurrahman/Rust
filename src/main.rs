@@ -88,3 +88,71 @@ fn konversi(){
     let e: i16 = d as i16;
     println!("e: {}", e); // akan tidak sesuai keinginan
 }
+
+#[test]
+fn numeric_operators(){
+    let a = 25;
+    let b = 2;
+
+    println!("a: {}, b: {}", a, b);
+    println!("a + b: {}", a + b);
+    println!("a - b: {}", a - b);
+    println!("a * b: {}", a * b);
+    println!("a / b: {}", a / b);
+    println!("a % b: {}", a % b);
+}
+
+#[test]
+fn augmented_asignment(){
+    // operasi ke variabel yang sama
+    let mut a = 25; // ganti dulu variabel menjadi mutable
+    let b = 2;
+    println!("a: {}, b: {}", a, b);
+
+    a += b;
+    println!("a = a += b :{}", a);
+
+    a -= b;
+    println!("a = a -= b :{}", a);
+
+    a *= b;
+    println!("a = a *= b :{}", a);
+
+    a /=b ;
+    println!("a = a /= b :{}", a);
+
+    a %= b;
+    println!("a = a %= b :{}", a);
+}
+
+#[test]
+fn boolean(){
+    let a = true;
+    let b: bool = false;
+
+    println!("a: {}", a);
+    println!("b: {}", b);
+}
+
+#[test]
+fn comparison(){
+    let a = 25;
+    let b = 2;
+    println!("a: {}, b: {}", a, b);
+    println!("a > b: {}", a > b);
+    println!("a < b: {}", a < b);
+    println!("a >= b: {}", a >= b);
+    println!("a <= b: {}", a <= b);
+    println!("a == b: {}", a == b);
+    println!("a != b: {}", a !=b);
+}
+
+#[test]
+fn boolean_operators(){
+    let a = true;
+    let b = false;
+    println!("a: {}, b: {}", a, b);
+    println!("a && b: {}", a && b);
+    println!("a || b: {}", a || b);
+    println!("!a: {}", !a);
+}
