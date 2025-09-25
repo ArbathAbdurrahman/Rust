@@ -7,6 +7,7 @@ mod first;
 mod second;
 mod third;
 mod model;
+mod trait_concept;
 
 fn main() {
     println!("Hello, world!");
