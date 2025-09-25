@@ -737,7 +737,17 @@ enum  Payment {
 }
 impl Payment {
     fn pay(&self, amount:i32) {
-        println!("Paying {}", amount);
+        match self {
+            Payment::CreditCard(number) => {
+                println!("Paying with credit card {} amount {}", number, amount);
+            }
+            Payment::BankTransfer(bank, number) => {
+                println!("Paying with bank transfer {} {} amount {}", bank, number, amount);
+            }
+            Payment::Ewallet(wallet, number) => {
+                println!("Paying with wallet {} {} amount {}", wallet,number, amount);
+            }
+        }
     }
 }
 #[test]
@@ -750,4 +760,66 @@ fn test_payment(){
 
     let _payment3: Payment = Payment::Ewallet(String::from("Ewallet"), String::from("3423234"));
     _payment3.pay(100);
+}
+
+/* PATTERN MATCHING
+    - match seperti percabangan match case py pengganti if else di rust bisa digunakan di enum
+    - bisa juga megambil data di enum
+    - ignore bisa menggunakan (..) atau (_)
+ */
+
+#[test]
+fn match_enum(){
+    let level = Level::Premium;
+    match level {
+        Level::Platinum => {
+            println!("Platinum");
+        },
+        Level::Premium => {
+            println!("Premium");
+        }
+        Level::Regular => {
+            println!("Regular");
+        }
+    }
+}
+
+#[test]
+fn match_value(){
+    let name = "Paijo";
+
+    match name {
+        "Budi" => {
+            println!("Hello Budi");
+        }
+        "Bambang" | "Paijo" => { // bisa tambahkan pipe
+            println!("Hello BOS");
+        }
+        // 80..=100 => { // bisa juga pakai range
+        //     println!("Hello 80 to 100");
+        // }
+        other => {
+            println!("Hello {}", other);
+        }
+    }
+}
+
+// type alias
+type Age = u32;
+type KTP = String;
+struct Customor {
+    id: KTP,
+    name: String,
+    age: Age,
+}
+#[test]
+fn type_alias(){
+    let customor = Customor{
+        id: String::from("4242435"),
+        name: String::from("Arbath"),
+        age: 20,
+    };
+    println!("customor id: {}", customor.id);
+    println!("customor name: {}", customor.name);
+    println!("customor age: {}", customor.age);
 }
