@@ -649,3 +649,105 @@ fn str_slice(){ // ownership masih pada name
     let last_name: &str = &name[7..];
     println!("last_name: {}", last_name);
 }
+
+/* STRUCT
+    - hampir seperti class tapi tanpa inheritance
+ */
+struct Person {
+    first_name: String,
+    last_name: String,
+    age: i32,
+}
+/* METHOD
+    - gunakan self dan reference agar tidak di claim oleh method
+ */
+impl Person {
+    fn say_hello(&self, name:&str){
+        println!("Hello {} my name is {}", name, self.first_name);
+    }
+}
+
+fn print_person(person: &Person){
+    println!("first_name: {}\nlast_name: {}\nage: {}", person.first_name, person.last_name, person.age);
+}
+#[test]
+fn struct_person(){
+    let last_name = String::from("Abdurrahman");
+
+    let person: Person = Person {
+        first_name: String::from("Arbath"),
+        age: 20,
+        last_name, // ownership akan berpindah ke Person
+    };
+    print_person(&person);
+    person.say_hello("Budi");
+
+    // Struct Update Syntax
+    // hati-hati kalau ada value heap harus .clone()
+    let person2 = Person{..person}; // ownership person pindah ke person2 kalau data heap
+    print_person(&person2);
+}
+
+struct  GeoPoint(f64, f64);
+struct Nothing; // struct tanpa field
+impl GeoPoint {
+    // assosiated function
+    // ini function tapi bukan sebagai method aksesnya menggunakan (struct::fn)
+    fn new(long: f64, lat: f64) -> GeoPoint {
+        GeoPoint(long, lat)
+    }
+}
+#[test]
+fn tuple_struct(){
+    let geo_point = GeoPoint(123.3, 456.2);
+    println!("{}",geo_point.0); // akses seperti tiple
+    println!("{}",geo_point.1);
+
+    // gunakan _ jika tidak digunakan
+    let _nothing = Nothing;
+    let _nothing2 = Nothing{};
+}
+
+#[test]
+fn assosiated_function(){
+    let geo_point = GeoPoint::new(123.3, 456.2);
+    println!("{}",geo_point.0);
+}
+
+/* ENUM
+    - tipe data yg dibuat untuk mengumpulkan beberapa kemungkinan
+    - bisa  ditambah method seperti struct
+ */
+enum Level {
+    Regular,
+    Premium,
+    Platinum,
+}
+#[test]
+fn test_enum(){
+    let _level1 = Level::Platinum;
+    let _level2 = Level::Premium;
+    let _level3 = Level::Regular;
+}
+
+enum  Payment {
+    CreditCard(String),
+    BankTransfer(String, String),
+    Ewallet(String, String),
+}
+impl Payment {
+    fn pay(&self, amount:i32) {
+        println!("Paying {}", amount);
+    }
+}
+#[test]
+fn test_payment(){
+    let _payment: Payment = Payment::CreditCard(String::from("3423234"));
+    _payment.pay(10);
+
+    let _payment2: Payment = Payment::BankTransfer(String::from("BankTransfer"), String::from("3423234"));
+    _payment2.pay(50);
+
+    let _payment3: Payment = Payment::Ewallet(String::from("Ewallet"), String::from("3423234"));
+    _payment3.pay(100);
+}
