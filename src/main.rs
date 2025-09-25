@@ -569,3 +569,83 @@ fn func_full_name_return(){
     println!("{}", first_name);
     println!("{}", last_name);
 }
+
+/*
+REFERENCE (&)
+- bebas  dibuat sebanyak apapun ini seperti memberikan akses ke heap tanpa pindah owner
+- lifetime reference mengikuti lifetime yang di pinjami akses
+    jadi saat variabel yang dipinjami akses data heap dihapus data masih tetap ada selama owner ada
+ */
+fn ref_full_name(first_name: &String, last_name: &String) -> String {
+    format!("{} {}", first_name, last_name) // sudah reference
+}
+
+#[test]
+fn ref_func_full_name(){
+    let first_name = String::from("Arbath");
+    let last_name = String::from("Abdurrahman");
+
+    let name = ref_full_name(&first_name, &last_name); // kirim reference (&) ke ref_full_name()
+    println!("Namaku {}", name);
+
+    // ini bisa karena ref_full_name() meminjam data bukan pidah kepemilikan
+    println!("{}", first_name);
+    println!("{}", last_name);
+}
+
+/* BORROWING
+  - karena reference itu meminjam maka peminjam secara default tidak bisa mengubah nilai yang dipinjam
+  - dalam satu waktu hanya boleh ada satu mutable reference agar bisa mengubah value (&mut)
+*/
+fn change_val(val: &mut String) {
+    val.push_str("Ubah\n");
+}
+#[test]
+fn func_change_val() {
+    // pastikan owner mutable agar yang dipinjami dapat mengubah data
+    let mut val = String::from("Arbath");
+    // change_val(&mut val); // kirim sebagai mutable juga
+    let val_borrow = &mut val; // ini boleh karena satu dan masih satu waktu
+    // let val_borrow2 = &mut val; // ini tidak boleh karena sudah beda waktu
+    // let val_borrow2 = &val; // ini juga tidak boleh
+    change_val(val_borrow);
+    // change_val(val_borrow2);
+
+    println!("val: {}", val);
+}
+
+/* DANGLING POINTER
+    - reference menunjuk data yang tidak ada di memory (-> &)
+
+fn dang_full_name(first_name: &String, last_name: &String) -> &String {
+    let name format!("{} {}", first_name, last_name) // sudah reference
+    return &name;
+}
+ */
+
+#[test]
+fn slice(){ // reference ke sebagian data menggunakan range (..)
+    // semua slice bertipe fix makanya ownernya di copy
+    let arr: [i32;10] = [1,2,3,4,5,6,7,8,9,10];
+    let slice1: &[i32] = &arr[..];
+    println!("slice1: {:?}", slice1);
+
+    let slice2 = &arr[3..];
+    println!("slice2: {:?}", slice2);
+
+    let slice3 = &arr[..2];
+    println!("slice3: {:?}", slice3);
+
+    let slice4 = &arr[4..8];
+    println!("slice4: {:?}", slice4);
+}
+
+#[test]
+fn str_slice(){ // ownership masih pada name
+    let name: String = String::from("Arbath Abdurrahman");
+    let first_name: &str = &name[..6];
+    println!("first_name: {}", first_name);
+
+    let last_name: &str = &name[7..];
+    println!("last_name: {}", last_name);
+}
