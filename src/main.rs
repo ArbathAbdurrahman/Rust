@@ -3,6 +3,10 @@
 
     compiler rust memaksa kita untuk menulis kode secara efisien dan warning ketika ada yang tidak best practice
  */
+mod first;
+mod second;
+mod third;
+mod model;
 
 fn main() {
     println!("Hello, world!");
@@ -822,4 +826,32 @@ fn type_alias(){
     println!("customor id: {}", customor.id);
     println!("customor name: {}", customor.name);
     println!("customor age: {}", customor.age);
+}
+
+#[test]
+fn test_module(){
+    let user = model::User {
+        username: String::from("arbath"),
+        first_name: String::from("Arbath"),
+        last_name: String::from("Abdurrahman"),
+        email: String::from("arbath@teknohole.com"),
+        age: 20,
+    };
+    println!("username: {}", user.username);
+    println!("first_name: {}", user.first_name);
+    println!("last_name: {}", user.last_name);
+    println!("email: {}", user.email);
+    println!("age: {}", user.age);
+    user.say_hello("Budi");
+}
+
+// gunakan use untuk import dan as untuk menghindari bentrok
+// use module::*
+// use module::{modul_a, modul_b}
+use first::say_hello as say_hello1;
+use second::say_hello as say_hello2;
+#[test]
+fn test_use(){
+    say_hello1();
+    say_hello2();
 }
