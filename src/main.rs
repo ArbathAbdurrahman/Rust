@@ -8,6 +8,8 @@ mod second;
 mod third;
 mod model;
 mod trait_concept;
+mod generic;
+mod undefined;
 
 fn main() {
     println!("Hello, world!");
@@ -855,4 +857,35 @@ use second::say_hello as say_hello2;
 fn test_use(){
     say_hello1();
     say_hello2();
+}
+
+// Debug dan Display
+use std::fmt;
+struct UserAccount {
+    id: u32,
+    username: String,
+    password_hash: String, // Field yang tidak ingin kita print
+}
+
+impl fmt::Debug for UserAccount {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("UserAccount")
+            .field("id", &self.id)
+            .field("username", &self.username)
+            .field("password_hash", &"********")
+            // Selesaikan dan kembalikan hasilnya
+            .finish()
+    }
+}
+
+#[test]
+fn test_debug() {
+    let user1 = UserAccount {
+        id: 101,
+        username: String::from("admin"),
+        password_hash: String::from("a1b2c3d4e5f6verysecret"),
+    };
+
+    // Sekarang, saat kita print, password tidak akan terlihat
+    println!("{:#?}", user1);
 }

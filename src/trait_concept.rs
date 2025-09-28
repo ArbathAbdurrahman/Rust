@@ -55,11 +55,11 @@ fn main() {
     kakatua.smart();
 }
 
-trait CanSayHello {
+pub trait CanSayHello {
     fn say_hello_t(&self) -> String;
     fn say_hello_to(&self, name: &str) -> String;
 }
-trait CanSayGoodBye {
+pub trait CanSayGoodBye {
     fn say_good_bye(&self, name:&str) -> String;
 }
 
